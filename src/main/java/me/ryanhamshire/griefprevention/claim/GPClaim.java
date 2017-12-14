@@ -25,8 +25,6 @@
  */
 package me.ryanhamshire.griefprevention.claim;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -35,33 +33,11 @@ import me.ryanhamshire.griefprevention.DataStore;
 import me.ryanhamshire.griefprevention.GPPlayerData;
 import me.ryanhamshire.griefprevention.GriefPreventionPlugin;
 import me.ryanhamshire.griefprevention.ShovelMode;
-import me.ryanhamshire.griefprevention.api.claim.Claim;
-import me.ryanhamshire.griefprevention.api.claim.ClaimBlockSystem;
-import me.ryanhamshire.griefprevention.api.claim.ClaimContexts;
-import me.ryanhamshire.griefprevention.api.claim.ClaimFlag;
-import me.ryanhamshire.griefprevention.api.claim.ClaimManager;
-import me.ryanhamshire.griefprevention.api.claim.ClaimResult;
-import me.ryanhamshire.griefprevention.api.claim.ClaimResultType;
-import me.ryanhamshire.griefprevention.api.claim.ClaimType;
-import me.ryanhamshire.griefprevention.api.claim.FlagResult;
-import me.ryanhamshire.griefprevention.api.claim.FlagResultType;
-import me.ryanhamshire.griefprevention.api.claim.TrustType;
+import me.ryanhamshire.griefprevention.api.claim.*;
 import me.ryanhamshire.griefprevention.api.data.ClaimData;
 import me.ryanhamshire.griefprevention.command.CommandHelper;
-import me.ryanhamshire.griefprevention.configuration.ClaimDataConfig;
-import me.ryanhamshire.griefprevention.configuration.ClaimStorageData;
-import me.ryanhamshire.griefprevention.configuration.GriefPreventionConfig;
-import me.ryanhamshire.griefprevention.configuration.IClaimData;
-import me.ryanhamshire.griefprevention.configuration.MessageStorage;
-import me.ryanhamshire.griefprevention.configuration.TownDataConfig;
-import me.ryanhamshire.griefprevention.configuration.TownStorageData;
-import me.ryanhamshire.griefprevention.event.GPChangeClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPCreateClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPDeleteClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPFlagClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPGroupTrustClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPTransferClaimEvent;
-import me.ryanhamshire.griefprevention.event.GPUserTrustClaimEvent;
+import me.ryanhamshire.griefprevention.configuration.*;
+import me.ryanhamshire.griefprevention.event.*;
 import me.ryanhamshire.griefprevention.permission.GPOptionHandler;
 import me.ryanhamshire.griefprevention.permission.GPOptions;
 import me.ryanhamshire.griefprevention.permission.GPPermissionHandler;
@@ -88,31 +64,20 @@ import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.Tristate;
-import org.spongepowered.api.world.BlockChangeFlag;
-import org.spongepowered.api.world.Chunk;
-import org.spongepowered.api.world.DimensionTypes;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.*;
 import org.spongepowered.common.SpongeImpl;
 import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import javax.annotation.Nullable;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 //represents a player claim
 //creating an instance doesn't make an effective claim
@@ -459,7 +424,7 @@ public class GPClaim implements Claim {
 
                     if (block.getState().getType() == BlockTypes.LAVA || block.getState().getType() == BlockTypes.FLOWING_WATER
                             || block.getState().getType() == BlockTypes.WATER || block.getState().getType() == BlockTypes.FLOWING_LAVA) {
-                        block.withState(BlockTypes.AIR.getDefaultState()).restore(true, BlockChangeFlag.PHYSICS);
+                        block.withState(BlockTypes.AIR.getDefaultState()).restore(true, BlockChangeFlags.PHYSICS);
                     }
                 }
             }
